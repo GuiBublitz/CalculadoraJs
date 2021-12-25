@@ -13,11 +13,19 @@ class CalcController{
             this.setDisplayDateTime();
         },1000)
     }
+    addEventListenerAll(item, events, fn){
+        events.split(' ').forEach(e => {    
+            item.addEventListener(e, fn, false);
+        });
+    }
     initButtonsEvents(){
         let buttons = document.querySelectorAll("#buttons > g, #parts > g");
         buttons.forEach( (item, index) =>{
-            item.addEventListener('click', ()=>{
+            this.addEventListenerAll(item, "click drag", ()=>{
                 console.log(item.className.baseVal.replace('btn-',''));
+            });
+            this.addEventListenerAll(item, "mouseover mouseup mousedown",()=>{
+                item.style.cursor = 'pointer';
             });
         });
     }
