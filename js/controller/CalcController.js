@@ -55,7 +55,6 @@ class CalcController{
             this._operation = [result];
         } else {
             this._operation = [result];
-
             if(last) this._operation.push(last);
         }
         this.setLastNumberToDisplay();
