@@ -1,5 +1,7 @@
 class CalcController{
     constructor(){
+        this._audio = new Audio('click.mp3');
+        this._audioOnOff = false;
         this._lastOperator = '';
         this._lastNumber = '';
         this._operation = [];
@@ -10,7 +12,6 @@ class CalcController{
         this.initialize();
         this.initButtonsEvents();
         this.initKeyBoard();
-        this.pasteFromClipBoard();
     }
     pasteFromClipBoard(){
         document.addEventListener('paste', e =>{
@@ -32,9 +33,25 @@ class CalcController{
             this.setDisplayDateTime();
         },1000)
         this.setLastNumberToDisplay();
+        this.pasteFromClipBoard();
+        document.querySelectorAll('.btn-ac').forEach(btn => {
+            btn.addEventListener('dblclick', e=>{
+                this.toggleAudio();
+            });
+        });
+    }
+    toggleAudio(){
+        this._audioOnOff = !this._audioOnOff;
+    }
+    playAudio(){
+        if(this._audioOnOff){
+            this._audio.currentTime = 0;
+            this._audio.play();
+        }
     }
     initKeyBoard(){
         document.addEventListener('keyup', e=>{
+            this.playAudio();
             switch(e.key){
                 case 'Escape':
                     this.allClear();
@@ -175,13 +192,14 @@ class CalcController{
         let lastOperation = this.getLastOperation();
         if(typeof lastOperation === 'string' && lastOperation.split('').indexOf('.') > -1) return;
         if(this.isOperator(lastOperation) || !lastOperation){
-            this.pushOperator('0.');
+            this.setLastOperation('0.');
         } else {
             this.setLastOperation(lastOperation.toString() + '.');
         }
         this.setLastNumberToDisplay();
     }
     execBtn(value){
+        this.playAudio();
         switch(value){
             case 'ac':
                 this.allClear();
