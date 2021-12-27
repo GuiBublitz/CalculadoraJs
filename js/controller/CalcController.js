@@ -129,7 +129,7 @@ class CalcController{
         }catch(e){
             setTimeout(()=>{
                 this.setError();
-            },1);
+            }, 1);
         }
     }
     calc(){
